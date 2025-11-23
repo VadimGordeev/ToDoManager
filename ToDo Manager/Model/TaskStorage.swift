@@ -17,13 +17,13 @@ class TasksStorage: TasksStorageProtocol {
             Task(title: "Clean house", type: .important, status: .planned),
             Task(title: "Read a book", type: .normal, status: .completed),
             Task(title: "Buy vacuum cleaner", type: .normal, status: .completed),
-            Task(title: "Kiss wife", type: .important, status: .planned),
-            Task(title: "Call parents", type: .important, status: .planned)
+            Task(title: "Call parents", type: .important, status: .completed),
+            Task(title: "Kiss wife", type: .important, status: .planned)
         ]
         return testTasks
     }
     
     func saveTasks(_ tasks: [any TaskProtocol]) {
-        <#code#>
+        
     }
 }
