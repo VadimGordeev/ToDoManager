@@ -53,7 +53,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="taslCellStack" id="rgu-sK-o7N">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="taslCellStack" id="rgu-sK-o7N" customClass="TaskCell" customModule="ToDo_Manager" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="106.66666412353516" width="393" height="51.333332061767578"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rgu-sK-o7N" id="I84-Tg-Wgz">
@@ -85,6 +85,10 @@
                                         <constraint firstAttribute="bottomMargin" secondItem="xdF-OP-bkG" secondAttribute="bottom" id="VC9-iw-3Zv"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="symbol" destination="sSX-ha-9kt" id="Npl-CH-wvz"/>
+                                    <outlet property="title" destination="Ew0-fE-pj3" id="EHw-vj-4jK"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
