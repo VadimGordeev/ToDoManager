@@ -174,6 +174,24 @@ class TaskListController: UITableViewController {
 //        перезагружаем секцию таблицы
         tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
     }
+    
+    override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//        получаем данные о задаче, которую необходимо перевести в статус запланированна
+        let taskType = sectionTypesPosition[indexPath.section]
+        guard let _ = tasks[taskType]?[indexPath.row] else {
+            return nil
+        }
+//        проверяем, что задача имеет статус выполнено
+        guard tasks[taskType]![indexPath.row].status == .completed else {
+            return nil
+        }
+//        создаем действие для изменения статуса
+        let actionSwipeInstance = UIContextualAction(style: .normal, title: "Not completed") {_,_,_ in
+            self.tasks[taskType]![indexPath.row].status = .planned
+            self.tableView
+            .reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)}
+        return UISwipeActionsConfiguration(actions: [actionSwipeInstance])
+    }
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
