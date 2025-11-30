@@ -212,10 +212,10 @@
             </objects>
             <point key="canvasLocation" x="1779" y="115"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Task Type Controller-->
         <scene sceneID="bNw-7q-hNm">
             <objects>
-                <tableViewController id="x0W-UF-y2r" sceneMemberID="viewController">
+                <tableViewController id="x0W-UF-y2r" customClass="TaskTypeController" customModule="ToDo_Manager" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="3Hk-aF-c5E">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
