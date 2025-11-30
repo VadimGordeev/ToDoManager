@@ -12,7 +12,7 @@ class TaskListController: UITableViewController {
     var taskStorage: TasksStorageProtocol = TasksStorage()
     var tasks: [TaskPriority:[TaskProtocol]] = [:] {
         didSet {
-//            sort
+            //            sort
             for (tasksGroupPriority, tasksGroup) in tasks {
                 tasks[tasksGroupPriority] = tasksGroup.sorted { task1, task2 in
                     let task1position = tasksStatusPosition.firstIndex(of: task1.status) ?? 0
@@ -20,7 +20,7 @@ class TaskListController: UITableViewController {
                     return task1position < task2position
                 }
             }
-//            save
+            //            save
             var savingArray: [TaskProtocol] = []
             tasks.forEach { _, value in
                 savingArray += value
@@ -30,7 +30,7 @@ class TaskListController: UITableViewController {
     }
     var sectionTypesPosition: [TaskPriority] = [.important, .normal]
     var tasksStatusPosition: [TaskStatus] = [.planned, .completed]
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadTasks()
@@ -38,31 +38,31 @@ class TaskListController: UITableViewController {
     }
     
     private func loadTasks() {
-//        подготовка коллекции с задачами, использование только тех задач, для которых определена секция в таблице
+        //        подготовка коллекции с задачами, использование только тех задач, для которых определена секция в таблице
         sectionTypesPosition.forEach { taskType in
             tasks[taskType] = []
         }
-//        загрузка и разбор задач из хранилища
+        //        загрузка и разбор задач из хранилища
         taskStorage.loadTasks().forEach { task in
             tasks[task.type]?.append(task)
         }
     }
-
+    
     // MARK: - Table view data source
-
-//    количество секций
+    
+    //    количество секций
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return tasks.count
     }
-// количество строк в определенной секции
+    // количество строк в определенной секции
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let taskType = sectionTypesPosition[section]
         let count = tasks[taskType]?.count ?? 0
-//        проверка на вывод заглушки "нет задач"
+        //        проверка на вывод заглушки "нет задач"
         return count > 0 ? count : 1
     }
-
+    
     //    ячейка для строки таблицы
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -73,7 +73,7 @@ class TaskListController: UITableViewController {
         let taskType = sectionTypesPosition[indexPath.section]
         let taskList = tasks[taskType] ?? []
         
-//        вывод заглушки или ячейки с задачей
+        //        вывод заглушки или ячейки с задачей
         if taskList.isEmpty {
             let cell = tableView.dequeueReusableCell(withIdentifier: "noTasksCell", for: indexPath)
             if let label = cell.viewWithTag(1) as? UILabel {
@@ -87,33 +87,38 @@ class TaskListController: UITableViewController {
             return getConfiguredTaskCell_stack(for: indexPath)
         }
     }
-
-//    ячейка на основе ограничений
+    
+    //    ячейка на основе ограничений
     private func getConfiguredTaskCell_constraints(for indexPath: IndexPath) -> UITableViewCell {
-//        загружаем прототип ячейки по идентификатору
+        //        загружаем прототип ячейки по идентификатору
         let cell = tableView.dequeueReusableCell(
             withIdentifier: "taskCellConstraints",
             for: indexPath
         )
-//        получаем данные о задаче, которую необходимо вывести в ячейке
+        //        получаем данные о задаче, которую необходимо вывести в ячейке
         let taskType = sectionTypesPosition[indexPath.section]
         guard let currentTask = tasks[taskType]?[indexPath.row] else {
             return cell
         }
-//        текстовая метка символа
+        //        текстовая метка символа
         let symbolLabel = cell.viewWithTag(1) as? UILabel
-//        текстовая метка названия задачи
+        //        текстовая метка названия задачи
         let textLabel = cell.viewWithTag(2) as? UILabel
         
-//        изменяем символ в ячейке
+        //        изменяем символ в ячейке
         symbolLabel?.text = getSymbolForTask(with: currentTask.status)
-//        изменяем текст в ячейке
+        //        изменяем текст в ячейке
         textLabel?.text = currentTask.title
         
-//        изменяем цвет текста и символа
+        //        цвет текста в зависимости от темы
+        let activeTaskColor = UIColor { traitCollection in
+            traitCollection.userInterfaceStyle == .dark ? .white : .black
+        }
+        
+        //        изменяем цвет текста и символа
         if currentTask.status == .planned {
-            textLabel?.textColor = .black
-            symbolLabel?.textColor = .black
+            textLabel?.textColor = activeTaskColor
+            symbolLabel?.textColor = activeTaskColor
         } else {
             textLabel?.textColor = .lightGray
             symbolLabel?.textColor = .lightGray
@@ -122,7 +127,7 @@ class TaskListController: UITableViewController {
         return cell
     }
     
-//  возвращаем символ для соответствующего типа задачи
+    //  возвращаем символ для соответствующего типа задачи
     private func getSymbolForTask(with status: TaskStatus) -> String {
         var resultSymbol: String
         if status == .planned {
@@ -135,7 +140,7 @@ class TaskListController: UITableViewController {
         return resultSymbol
     }
     
-//  название секций
+    //  название секций
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var title: String?
         let tasksType = sectionTypesPosition[section]
@@ -148,11 +153,11 @@ class TaskListController: UITableViewController {
         return title
     }
     
-//    ячейка на основе стека
+    //    ячейка на основе стека
     private func getConfiguredTaskCell_stack(for indexPath: IndexPath) -> UITableViewCell{
-//        загружаем прототип ячейки
+        //        загружаем прототип ячейки
         let cell = tableView.dequeueReusableCell(withIdentifier: "taskCellStack", for: indexPath) as! TaskCell
-//        получаем данные о задаче, которые необходимо вывести в ячейке
+        //        получаем данные о задаче, которые необходимо вывести в ячейке
         let taskType = sectionTypesPosition[indexPath.section]
         guard let currentTask = tasks[taskType]?[indexPath.row] else {
             return cell
@@ -160,9 +165,13 @@ class TaskListController: UITableViewController {
         cell.title.text = currentTask.title
         cell.symbol.text = getSymbolForTask(with: currentTask.status)
         
+        let activeTaskColor = UIColor { traitCollection in
+            traitCollection.userInterfaceStyle == .dark ? .white : .black
+        }
+        
         if currentTask.status == .planned {
-            cell.title.textColor = .black
-            cell.symbol.textColor = .black
+            cell.title.textColor = activeTaskColor
+            cell.symbol.textColor = activeTaskColor
         } else {
             cell.title.textColor = .lightGray
             cell.symbol.textColor = .lightGray
@@ -172,12 +181,12 @@ class TaskListController: UITableViewController {
     }
     
     func setTasks(_ tasksCollection: [TaskProtocol]) {
-//        подготовка коллекции с задачами
-//        использование только тех задач, для которых определена секция
+        //        подготовка коллекции с задачами
+        //        использование только тех задач, для которых определена секция
         sectionTypesPosition.forEach { taskType in
             tasks[taskType] = []
         }
-//        загрузка и разбор задач из хранилища
+        //        загрузка и разбор задач из хранилища
         tasksCollection.forEach { task in
             tasks[task.type]?.append(task)
         }
@@ -202,9 +211,9 @@ class TaskListController: UITableViewController {
             tableView.deselectRow(at: indexPath, animated: true)
             return
         }
-//        отмечаем задачу как выполненную
+        //        отмечаем задачу как выполненную
         tasks[taskType]![indexPath.row].status = .completed
-//        перезагружаем секцию таблицы
+        //        перезагружаем секцию таблицы
         tableView.reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
     }
     
@@ -212,7 +221,7 @@ class TaskListController: UITableViewController {
         //        получаем данные о задаче, которую необходимо перевести в статус запланированна
         let taskType = sectionTypesPosition[indexPath.section]
         let taskList = tasks[taskType] ?? []
-//        удаление действий для заглушки
+        //        удаление действий для заглушки
         guard !taskList.isEmpty else { return nil }
         
         guard let _ = tasks[taskType]?[indexPath.row] else {
@@ -263,11 +272,11 @@ class TaskListController: UITableViewController {
         return actionConfiguration
     }
     
-//    удаление возможности взаимодействия с заглушкой
+    //    удаление возможности взаимодействия с заглушкой
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         let taskType = sectionTypesPosition[indexPath.section]
         let taskList = tasks[taskType] ?? []
-
+        
         return !taskList.isEmpty
     }
     
@@ -284,26 +293,26 @@ class TaskListController: UITableViewController {
         moveRowAt sourceIndexPath: IndexPath,
         to destinationIndexPath: IndexPath
     ) {
-//        секция, из которой происходит перемещение
+        //        секция, из которой происходит перемещение
         let taskTypeFrom = sectionTypesPosition[sourceIndexPath.section]
-//        секция, в которую происходит перемещение
+        //        секция, в которую происходит перемещение
         let taskTypeTo = sectionTypesPosition[destinationIndexPath.section]
         
-//        безопасно извлекаем задачу, тем самым контролируя ее
+        //        безопасно извлекаем задачу, тем самым контролируя ее
         guard let movedTask = tasks[taskTypeFrom]?[sourceIndexPath.row] else {
             return
         }
         
-//        удаляем задачу с места, откуда она перенесена
+        //        удаляем задачу с места, откуда она перенесена
         tasks[taskTypeFrom]!.remove(at: sourceIndexPath.row)
-//        вставляем задачу на новую позицию
+        //        вставляем задачу на новую позицию
         tasks[taskTypeTo]!.insert(movedTask, at: destinationIndexPath.row)
-//        если секция изменилась, изменяем тип задачи в соответствии с новой позицией
+        //        если секция изменилась, изменяем тип задачи в соответствии с новой позицией
         if taskTypeFrom != taskTypeTo {
             tasks[taskTypeTo]![destinationIndexPath.row].type = taskTypeTo
         }
         
-//        обновляем данные
+        //        обновляем данные
         tableView.reloadData()
     }
     
