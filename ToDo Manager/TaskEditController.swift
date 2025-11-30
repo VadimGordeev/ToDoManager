@@ -23,7 +23,14 @@ class TaskEditController: UITableViewController {
     @IBOutlet var taskStatusSwitch: UISwitch!
     
     @IBAction func saveTask(_ sender: UIBarButtonItem) {
-        let title = taskTitle?.text ?? ""
+        let title = taskTitle.text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        
+        guard !title.isEmpty else {
+            let alertController = UIAlertController(title: "The task name must not be empty", message: "Please enter task title", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alertController, animated: true, completion: nil)
+            return
+        }
         let type = taskType
         let status: TaskStatus = taskStatusSwitch.isOn ? .completed : .planned
         doAfterEdit?(title, type, status)
