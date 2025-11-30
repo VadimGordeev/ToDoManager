@@ -57,23 +57,35 @@ class TaskListController: UITableViewController {
     }
 // количество строк в определенной секции
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-//        определяем приоритет залач, соответсвующий текущей секции
         let taskType = sectionTypesPosition[section]
-        guard let currentTasksType = tasks[taskType] else {
-            return 0
-        }
-        return currentTasksType.count
+        let count = tasks[taskType]?.count ?? 0
+//        проверка на вывод заглушки "нет задач"
+        return count > 0 ? count : 1
     }
 
-//    ячейка для строки таблицы
+    //    ячейка для строки таблицы
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+        
         // Configure the cell...
-// ячейка на основе констрейнтов
-//        return getConfiguredTaskCell_constraints(for: indexPath)
-// ячейка на основе стека
-        return getConfiguredTaskCell_stack(for: indexPath)
+        // ячейка на основе констрейнтов
+        //        return getConfiguredTaskCell_constraints(for: indexPath)
+        // ячейка на основе стека
+        let taskType = sectionTypesPosition[indexPath.section]
+        let taskList = tasks[taskType] ?? []
+        
+//        вывод заглушки или ячейки с задачей
+        if taskList.isEmpty {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "noTasksCell", for: indexPath)
+            if let label = cell.viewWithTag(1) as? UILabel {
+                label.text = "Нет задач"
+                label.textColor = .secondaryLabel
+                label.textAlignment = .center
+            }
+            cell.selectionStyle = .none
+            return cell
+        } else {
+            return getConfiguredTaskCell_stack(for: indexPath)
+        }
     }
 
 //    ячейка на основе ограничений
@@ -175,12 +187,18 @@ class TaskListController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //        проверяем существование задачи
         let taskType = sectionTypesPosition[indexPath.section]
+        let taskList = tasks[taskType] ?? []
+        //        удаление действий для заглушки
+        guard !taskList.isEmpty else {
+            tableView.deselectRow(at: indexPath, animated: true)
+            return
+        }
         guard let _ = tasks[taskType]?[indexPath.row] else {
             return
         }
         //        проверяем, что задача не является выполненной
         guard tasks[taskType]![indexPath.row].status == .planned else {
-//            снимаем выделение со строки
+            //            снимаем выделение со строки
             tableView.deselectRow(at: indexPath, animated: true)
             return
         }
@@ -193,6 +211,10 @@ class TaskListController: UITableViewController {
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         //        получаем данные о задаче, которую необходимо перевести в статус запланированна
         let taskType = sectionTypesPosition[indexPath.section]
+        let taskList = tasks[taskType] ?? []
+//        удаление действий для заглушки
+        guard !taskList.isEmpty else { return nil }
+        
         guard let _ = tasks[taskType]?[indexPath.row] else {
             return nil
         }
@@ -239,6 +261,14 @@ class TaskListController: UITableViewController {
         }
         
         return actionConfiguration
+    }
+    
+//    удаление возможности взаимодействия с заглушкой
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        let taskType = sectionTypesPosition[indexPath.section]
+        let taskList = tasks[taskType] ?? []
+
+        return !taskList.isEmpty
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

@@ -96,6 +96,28 @@
                                     <outlet property="title" destination="Ew0-fE-pj3" id="EHw-vj-4jK"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="noTasksCell" id="0qD-Ko-Hg3">
+                                <rect key="frame" x="0.0" y="157.99999618530273" width="393" height="51.333332061767578"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0qD-Ko-Hg3" id="Uth-n7-qiR">
+                                    <rect key="frame" x="0.0" y="0.0" width="393" height="51.333332061767578"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No tasks" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5z2-BW-af0">
+                                            <rect key="frame" x="20" y="14.999999999999998" width="353" height="21.333333333333329"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <color key="textColor" systemColor="systemGrayColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="5z2-BW-af0" firstAttribute="leading" secondItem="Uth-n7-qiR" secondAttribute="leadingMargin" id="H4v-O8-xp2"/>
+                                        <constraint firstItem="5z2-BW-af0" firstAttribute="top" secondItem="Uth-n7-qiR" secondAttribute="topMargin" id="PMH-KX-vA7"/>
+                                        <constraint firstItem="5z2-BW-af0" firstAttribute="bottom" secondItem="Uth-n7-qiR" secondAttribute="bottomMargin" id="VIr-ee-dK4"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="5z2-BW-af0" secondAttribute="trailing" id="jXM-hd-7aP"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="zAA-2Y-vEH" id="hwq-WV-Qat"/>
