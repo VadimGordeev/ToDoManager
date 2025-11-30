@@ -183,7 +183,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="x0W-UF-y2r" kind="show" id="uhi-0t-ilO"/>
+                                            <segue destination="x0W-UF-y2r" kind="show" identifier="toTaskTypeScreen" id="uhi-0t-ilO"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="fOo-4D-6U8">

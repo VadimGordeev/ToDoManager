@@ -11,6 +11,7 @@ class TaskTypeController: UITableViewController {
     
     //    1. кортеж, описывающий тип задачи
     typealias TypeCellDescription = (type: TaskPriority, title: String, description: String)
+    var doAfterTypeSelected:((TaskPriority) -> Void)?
     
     //    2. коллекция доступных типов задач с их описанием
     private var taskTypesInformation: [TypeCellDescription] = [
@@ -63,5 +64,14 @@ class TaskTypeController: UITableViewController {
             cell.accessoryType = .none
         }
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        получаем выбранный тип
+        let selectedType = taskTypesInformation[indexPath.row].type
+//        вызов обработчика
+        doAfterTypeSelected?(selectedType)
+//        переход к предыдущему экрану
+        navigationController?.popViewController(animated: true)
     }
 }
