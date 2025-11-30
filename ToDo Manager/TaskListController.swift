@@ -283,9 +283,17 @@ class TaskListController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         // удаляем задачу
         let taskType = sectionTypesPosition[indexPath.section]
-        tasks[taskType]?.remove(at: indexPath.row)
+        var taskList = tasks[taskType] ?? []
+        guard !taskList.isEmpty else { return }
+        taskList.remove(at: indexPath.row)
+        tasks[taskType] = taskList
         // удаляем строку, соответсвующую задаче
-        tableView.deleteRows(at: [indexPath], with: .automatic)
+        if taskList.count > 0 {
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+        } else {
+            // если стало 0 — перезагружаем секцию, чтобы показать "Нет задач"
+            tableView.reloadSections(IndexSet(integer: indexPath.section), with: .automatic)
+        }
     }
     
     override func tableView(
