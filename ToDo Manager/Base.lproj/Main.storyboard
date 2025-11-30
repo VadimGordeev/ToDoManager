@@ -187,11 +187,30 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="fOo-4D-6U8">
-                                        <rect key="frame" x="0.0" y="123.33333206176758" width="393" height="51"/>
+                                        <rect key="frame" x="0.0" y="123.33333206176758" width="393" height="51.333332061767578"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fOo-4D-6U8" id="fJx-RM-3CL">
-                                            <rect key="frame" x="0.0" y="0.0" width="393" height="51"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="51.333332061767578"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Done" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PTK-aR-r8Z">
+                                                    <rect key="frame" x="20" y="14.999999999999998" width="292" height="21.333333333333329"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="jv0-cv-rIm">
+                                                    <rect key="frame" x="312" y="11.666666666666664" width="63" height="28"/>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="jv0-cv-rIm" secondAttribute="trailing" id="IYy-oA-cLv"/>
+                                                <constraint firstItem="PTK-aR-r8Z" firstAttribute="leading" secondItem="fJx-RM-3CL" secondAttribute="leadingMargin" id="Oc7-ea-yUZ"/>
+                                                <constraint firstItem="jv0-cv-rIm" firstAttribute="leading" secondItem="PTK-aR-r8Z" secondAttribute="trailing" id="bQT-CK-ctH"/>
+                                                <constraint firstItem="PTK-aR-r8Z" firstAttribute="bottom" secondItem="fJx-RM-3CL" secondAttribute="bottomMargin" id="egS-gl-HJQ"/>
+                                                <constraint firstItem="PTK-aR-r8Z" firstAttribute="top" secondItem="fJx-RM-3CL" secondAttribute="topMargin" id="rlJ-Q9-y3p"/>
+                                                <constraint firstItem="jv0-cv-rIm" firstAttribute="centerY" secondItem="fJx-RM-3CL" secondAttribute="centerY" id="usE-iz-VS1"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -204,6 +223,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="jsy-gS-2mI"/>
                     <connections>
+                        <outlet property="taskStatusSwitch" destination="jv0-cv-rIm" id="Act-gQ-9da"/>
                         <outlet property="taskTitle" destination="RD0-X5-G1Y" id="pco-w6-Va6"/>
                         <outlet property="taskTypeLabel" destination="K7S-Fs-2gs" id="db3-pY-N0O"/>
                     </connections>

@@ -20,11 +20,15 @@ class TaskEditController: UITableViewController {
     
     @IBOutlet var taskTitle: UITextField!
     @IBOutlet var taskTypeLabel: UILabel!
+    @IBOutlet var taskStatusSwitch: UISwitch!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         taskTitle?.text = taskText
         taskTypeLabel?.text = taskTitles[taskType]
+        if taskStatus == .completed {
+            taskStatusSwitch.isOn = true
+        }
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
