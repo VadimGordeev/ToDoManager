@@ -44,12 +44,6 @@ class TaskEditController: UITableViewController {
         if taskStatus == .completed {
             taskStatusSwitch.isOn = true
         }
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
 
     // MARK: - Table view data source
@@ -62,6 +56,10 @@ class TaskEditController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return 3
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -76,6 +74,7 @@ class TaskEditController: UITableViewController {
 //                обновляем метку с текущим типом
                 taskTypeLabel?.text = taskTitles[taskType]
             }
+            
         }
     }
 }
