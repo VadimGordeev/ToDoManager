@@ -12,6 +12,7 @@ class TaskListController: UITableViewController {
     var taskStorage: TasksStorageProtocol = TasksStorage()
     var tasks: [TaskPriority:[TaskProtocol]] = [:] {
         didSet {
+//            sort
             for (tasksGroupPriority, tasksGroup) in tasks {
                 tasks[tasksGroupPriority] = tasksGroup.sorted { task1, task2 in
                     let task1position = tasksStatusPosition.firstIndex(of: task1.status) ?? 0
@@ -19,6 +20,12 @@ class TaskListController: UITableViewController {
                     return task1position < task2position
                 }
             }
+//            save
+            var savingArray: [TaskProtocol] = []
+            tasks.forEach { _, value in
+                savingArray += value
+            }
+            taskStorage.saveTasks(savingArray)
         }
     }
     var sectionTypesPosition: [TaskPriority] = [.important, .normal]
@@ -28,11 +35,6 @@ class TaskListController: UITableViewController {
         super.viewDidLoad()
         loadTasks()
         navigationItem.leftBarButtonItem = editButtonItem
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     private func loadTasks() {
@@ -155,6 +157,19 @@ class TaskListController: UITableViewController {
         }
         
         return cell
+    }
+    
+    func setTasks(_ tasksCollection: [TaskProtocol]) {
+//        подготовка коллекции с задачами
+//        использование только тех задач, для которых определена секция
+        sectionTypesPosition.forEach { taskType in
+            tasks[taskType] = []
+        }
+//        загрузка и разбор задач из хранилища
+        tasksCollection.forEach { task in
+            tasks[task.type]?.append(task)
+        }
+        
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
