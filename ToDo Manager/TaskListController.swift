@@ -176,21 +176,54 @@ class TaskListController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//        получаем данные о задаче, которую необходимо перевести в статус запланированна
+        //        получаем данные о задаче, которую необходимо перевести в статус запланированна
         let taskType = sectionTypesPosition[indexPath.section]
         guard let _ = tasks[taskType]?[indexPath.row] else {
             return nil
         }
-//        проверяем, что задача имеет статус выполнено
-        guard tasks[taskType]![indexPath.row].status == .completed else {
-            return nil
-        }
-//        создаем действие для изменения статуса
-        let actionSwipeInstance = UIContextualAction(style: .normal, title: "Not completed") {_,_,_ in
+        //        действие для изменения статуса на запланирована
+        let actionSwipeInstance = UIContextualAction(style: .normal, title: "Undone") {_,_,_ in
             self.tasks[taskType]![indexPath.row].status = .planned
             self.tableView
-            .reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)}
-        return UISwipeActionsConfiguration(actions: [actionSwipeInstance])
+                .reloadSections(IndexSet(arrayLiteral: indexPath.section), with: .automatic)
+        }
+        //        действие для перехода к экрану редактирования
+        let actionEditInstance = UIContextualAction(style: .normal, title: "Edit") {
+            _,
+            _,
+            _ in
+            //        загрузка сцены со storyboard
+            let editScreen = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(
+                identifier: "TaskEditController"
+            ) as! TaskEditController
+            //            передача значений задачи
+            editScreen.taskText = self.tasks[taskType]![indexPath.row].title
+            editScreen.taskType = self.tasks[taskType]![indexPath.row].type
+            editScreen.taskStatus = self.tasks[taskType]![indexPath.row].status
+            //            передача обработчика для сохранения задачи
+            editScreen.doAfterEdit = { [unowned self] title, type, status in
+                let editedTask = Task(title: title, type: type, status: status)
+                tasks[taskType]![indexPath.row] = editedTask
+                tableView.reloadData()
+            }
+            //        переход к экрану редактирования
+            self.navigationController?.pushViewController(editScreen, animated: true)
+        }
+        //        изменяем цвет кнопки с действием
+        actionEditInstance.backgroundColor = .darkGray
+        
+        //        создаем объект, описывающий доступные действия
+        //        в зависимости от статуса задачи будет отображено 1 или 2 действия
+        let actionConfiguration: UISwipeActionsConfiguration
+        if tasks[taskType]![indexPath.row].status == .completed {
+            actionConfiguration = UISwipeActionsConfiguration(
+                actions: [actionSwipeInstance, actionEditInstance]
+            )
+        } else {
+            actionConfiguration = UISwipeActionsConfiguration(actions: [actionEditInstance])
+        }
+        
+        return actionConfiguration
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
